@@ -6,7 +6,8 @@
   "scripts": {
     "lint:md": "markdownlint **/*.md --ignore node_modules",
     "check:links": "node scripts/check-links.js",
-    "format": "prettier --write \"**/*.md\""
+    "format": "prettier --write \"**/*.md\"",
+    "spell-check": "python -m pyspelling -c .spellcheck.yml"
   },
   "devDependencies": {
     "markdown-link-check": "^3.10.3",

@@ -29,49 +29,9 @@ jobs:
           pip install pyspelling
           sudo apt-get install -y aspell aspell-en
           
-      - name: Create spelling configuration
-        run: |
-          cat > .spellcheck.yml << 'EOF'
-          matrix:
-          - name: markdown
-            sources:
-            - '**/*.md'
-            aspell:
-              lang: en
-            dictionary:
-              wordlists:
-              - .wordlist.txt
-              encoding: utf-8
-            pipeline:
-            - pyspelling.filters.markdown:
-            - pyspelling.filters.html:
-                comments: false
-                ignores:
-                - code
-                - pre
-            default_encoding: utf-8
-          EOF
+      # Using the persistent .spellcheck.yml file in the repository
           
-      - name: Create custom wordlist
-        run: |
-          cat > .wordlist.txt << 'EOF'
-          API
-          APIs
-          JK
-          Radio
-          RESTful
-          OpenAPI
-          Swagger
-          JSON
-          TLS
-          SSL
-          CI
-          CD
-          SLA
-          OAuth
-          SAML
-          JWT
-          EOF
+      # Using the persistent .wordlist.txt file in the repository
           
       - name: Run PySpelling
         run: python -m pyspelling -c .spellcheck.yml

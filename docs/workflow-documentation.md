@@ -52,6 +52,27 @@ This workflow uses PySpelling to catch spelling errors in documentation.
 
 **Key Features:**
 
+- Uses `aspell` with English dictionary
+- Filters to ignore code blocks and HTML elements
+- Maintains a custom wordlist of technical terms
+- Supports both GitHub-specific and programming terms
+
+**Managing Technical Terms:**
+
+To add new technical terms, simply update the `.wordlist.txt` file with:
+1. One term per line
+2. Include both lowercase and uppercase variants if needed
+3. Add common abbreviations and acronyms
+4. Include product names, tools, and framework terms
+
+**When it runs:**
+
+- On push to main/master branch for markdown files
+- On pull requests for markdown files
+- Manually via workflow dispatch
+
+**Key Features:**
+
 - Checks spelling in markdown files
 - Uses a custom dictionary for technical terms
 - Ignores code blocks
