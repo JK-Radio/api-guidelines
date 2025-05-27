@@ -39,6 +39,7 @@ powershell
 repo
 yml
 pyspelling
+PySpelling
 aspell
 sudo
 choco
@@ -52,3 +53,14 @@ http
 https
 ps
 sexualized
+lifecycle
+observability
+backend
+discoverable
+reusability
+schemas
+onboarding
+integrations
+deprecations
+integrators
+
