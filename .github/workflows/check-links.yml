@@ -28,10 +28,10 @@ jobs:
           node-version: '18'
           
       - name: Install dependencies
-        run: npm ci || npm install
+        run: npm install
         
       - name: Check Links
-        run: npm run check:links || find . -name "*.md" -not -path "./node_modules/*" | xargs -n1 npx markdown-link-check -c .markdown-link-check.json -q
+        run: npx markdown-link-check -c .markdown-link-check.json "**/*.md"
           
       - name: Report Results
         if: ${{ failure() }}

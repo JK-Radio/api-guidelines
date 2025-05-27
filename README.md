@@ -1,10 +1,13 @@
 # JK Radio API Guidelines
 
-This repository contains the official API guidelines for JK Radio. These guidelines ensure consistency, security, and usability across all JK Radio APIs, while promoting an API-first approach to development.
+This repository contains the official API guidelines for JK Radio. These guidelines ensure
+consistency, security, and usability across all JK Radio APIs, while promoting an API-first approach
+to development.
 
 ## Contents
 
-- [API Guidelines](jkradio-api-guidelines.md) - Comprehensive guidelines for developing, securing, and publishing APIs within the JK Radio organization
+- [API Guidelines](jkradio-api-guidelines.md) - Comprehensive guidelines for developing, securing,  
+  and publishing APIs within the JK Radio organization
 - [Contributing](CONTRIBUTING.md) - Information for contributors
 - [Code of Conduct](CODE-OF-CONDUCT.md) - Community guidelines for contributors
 
@@ -28,7 +31,7 @@ To contribute to this project:
 
 Before submitting, please ensure your changes pass all automated checks by running:
 
-```bash
+```powershell
 # Install local development dependencies
 npm install
 
@@ -44,9 +47,9 @@ npm run format
 
 Alternatively, you can run these checks directly with npx:
 
-```bash
+```powershell
 # Run markdown linting
-npx markdownlint '**/*.md' --ignore node_modules
+npx markdownlint **/*.md --ignore node_modules
 
 # Check links
 npx markdown-link-check -c .markdown-link-check.json **/*.md
