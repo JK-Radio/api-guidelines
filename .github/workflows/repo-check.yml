@@ -1,0 +1,56 @@
+name: Repository Check
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  check-repo-structure:
+    name: Check Repository Structure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        
+      - name: Check Required Files
+        run: |
+          required_files=("LICENSE" "CODE-OF-CONDUCT.md" "CONTRIBUTING.md" "jkradio-api-guidelines.md")
+          for file in "${required_files[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "Error: Required file $file is missing"
+              exit 1
+            fi
+          done
+          echo "All required files exist"
+          
+      - name: Check README.md Exists
+        run: |
+          if [ ! -f "README.md" ]; then
+            echo "Warning: Repository should contain a README.md file"
+            echo "Creating basic README.md"
+            cat > README.md << 'EOF'
+          # JK Radio API Guidelines
+          
+          This repository contains the official API guidelines for JK Radio. These guidelines ensure consistency, security, and usability across all JK Radio APIs, while promoting an API-first approach to development.
+          
+          ## Contents
+          
+          - [API Guidelines](jkradio-api-guidelines.md)
+          - [Contributing](CONTRIBUTING.md)
+          - [Code of Conduct](CODE-OF-CONDUCT.md)
+          
+          ## License
+          
+          This project is licensed under the terms specified in the [LICENSE](LICENSE) file.
+          EOF
+            git config --global user.email "github-actions@github.com"
+            git config --global user.name "GitHub Actions"
+            git add README.md
+            git commit -m "Add README.md"
+            git push
+          else
+            echo "README.md exists"
+          fi

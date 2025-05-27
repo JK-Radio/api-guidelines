@@ -1,0 +1,57 @@
+name: Check Markdown Links
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - '**.md'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - '**.md'
+  schedule:
+    # Run weekly on Monday to catch broken links
+    - cron: '0 8 * * 1'
+  workflow_dispatch:
+
+jobs:
+  check-links:
+    name: Check Markdown Links
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Install markdown-link-check
+        run: npm install -g markdown-link-check
+        
+      - name: Create markdown-link-check config
+        run: |
+          cat > .markdown-link-check.json << 'EOF'
+          {
+            "ignorePatterns": [
+              { "pattern": "^https://jkradio.internal/" }
+            ],
+            "replacementPatterns": [],
+            "timeout": "20s",
+            "retryOn429": true,
+            "retryCount": 3
+          }
+          EOF
+          
+      - name: Check Links
+        run: |
+          find . -name "*.md" -not -path "./node_modules/*" | xargs -n1 markdown-link-check -c .markdown-link-check.json -q
+          
+      - name: Report Results
+        if: ${{ failure() }}
+        run: |
+          echo "Some links are broken! Please check the output above."
+          echo "Run markdown-link-check locally to verify and fix broken links:"
+          echo "npm install -g markdown-link-check"
+          echo "markdown-link-check path/to/markdown/file.md"

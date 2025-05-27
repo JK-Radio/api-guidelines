@@ -1,0 +1,77 @@
+name: Spell Check
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - '**.md'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - '**.md'
+  workflow_dispatch:
+
+jobs:
+  spellcheck:
+    name: Check Spelling
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Install Dependencies
+        run: |
+          pip install pyspelling
+          sudo apt-get install -y aspell aspell-en
+          
+      - name: Create spelling configuration
+        run: |
+          cat > .spellcheck.yml << 'EOF'
+          matrix:
+          - name: markdown
+            sources:
+            - '**/*.md'
+            aspell:
+              lang: en
+            dictionary:
+              wordlists:
+              - .wordlist.txt
+              encoding: utf-8
+            pipeline:
+            - pyspelling.filters.markdown:
+            - pyspelling.filters.html:
+                comments: false
+                ignores:
+                - code
+                - pre
+            default_encoding: utf-8
+          EOF
+          
+      - name: Create custom wordlist
+        run: |
+          cat > .wordlist.txt << 'EOF'
+          API
+          APIs
+          JK
+          Radio
+          RESTful
+          OpenAPI
+          Swagger
+          JSON
+          TLS
+          SSL
+          CI
+          CD
+          SLA
+          OAuth
+          SAML
+          JWT
+          EOF
+          
+      - name: Run PySpelling
+        run: python -m pyspelling -c .spellcheck.yml

@@ -1,0 +1,45 @@
+name: Markdown Lint
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - '**.md'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - '**.md'
+  workflow_dispatch:
+
+jobs:
+  markdown-lint:
+    name: Lint Markdown Files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install markdownlint-cli
+        run: npm install -g markdownlint-cli
+        
+      - name: Create markdownlint config file
+        run: |
+          cat > .markdownlint.json << 'EOF'
+          {
+            "default": true,
+            "MD013": { "line_length": 120 },
+            "MD033": false,
+            "MD036": false,
+            "MD041": false,
+            "MD024": { "siblings_only": true }
+          }
+          EOF
+          
+      - name: Run markdownlint
+        run: markdownlint '**/*.md' --ignore node_modules

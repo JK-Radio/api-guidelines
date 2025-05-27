@@ -1,0 +1,48 @@
+name: Format Markdown
+
+on:
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - '**.md'
+  workflow_dispatch:
+
+jobs:
+  format:
+    name: Format Markdown Files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Install Prettier
+        run: npm install --global prettier prettier-plugin-md
+        
+      - name: Create Prettier configuration
+        run: |
+          cat > .prettierrc << 'EOF'
+          {
+            "proseWrap": "always",
+            "printWidth": 100,
+            "tabWidth": 2,
+            "useTabs": false,
+            "trailingComma": "none",
+            "singleQuote": false
+          }
+          EOF
+          
+      - name: Format Markdown Files
+        run: prettier --write "**/*.md"
+        
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "style: format markdown files with prettier"
+          branch: ${{ github.head_ref }}
