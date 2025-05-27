@@ -60,6 +60,7 @@ This workflow uses PySpelling to catch spelling errors in documentation.
 **Managing Technical Terms:**
 
 To add new technical terms, simply update the `.wordlist.txt` file with:
+
 1. One term per line
 2. Include both lowercase and uppercase variants if needed
 3. Add common abbreviations and acronyms
