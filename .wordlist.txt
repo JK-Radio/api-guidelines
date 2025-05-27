@@ -38,3 +38,16 @@ npx
 powershell
 repo
 yml
+pyspelling
+aspell
+sudo
+choco
+Homebrew
+macOS
+wordlist
+nektos
+markdownlint
+dbitech
+http
+https
+ps
