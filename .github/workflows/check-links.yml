@@ -27,26 +27,11 @@ jobs:
         with:
           node-version: '18'
           
-      - name: Install markdown-link-check
-        run: npm install -g markdown-link-check
+      - name: Install dependencies
+        run: npm ci || npm install
         
-      - name: Create markdown-link-check config
-        run: |
-          cat > .markdown-link-check.json << 'EOF'
-          {
-            "ignorePatterns": [
-              { "pattern": "^https://jkradio.internal/" }
-            ],
-            "replacementPatterns": [],
-            "timeout": "20s",
-            "retryOn429": true,
-            "retryCount": 3
-          }
-          EOF
-          
       - name: Check Links
-        run: |
-          find . -name "*.md" -not -path "./node_modules/*" | xargs -n1 markdown-link-check -c .markdown-link-check.json -q
+        run: npm run check:links || find . -name "*.md" -not -path "./node_modules/*" | xargs -n1 npx markdown-link-check -c .markdown-link-check.json -q
           
       - name: Report Results
         if: ${{ failure() }}

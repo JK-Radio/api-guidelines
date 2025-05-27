@@ -22,24 +22,26 @@ jobs:
         with:
           node-version: '18'
           
-      - name: Install Prettier
-        run: npm install --global prettier prettier-plugin-md
+      - name: Install dependencies
+        run: npm ci || npm install
         
-      - name: Create Prettier configuration
+      - name: Create Prettier configuration if it doesn't exist
         run: |
-          cat > .prettierrc << 'EOF'
-          {
-            "proseWrap": "always",
-            "printWidth": 100,
-            "tabWidth": 2,
-            "useTabs": false,
-            "trailingComma": "none",
-            "singleQuote": false
-          }
-          EOF
+          if [ ! -f .prettierrc ]; then
+            cat > .prettierrc << 'EOF'
+            {
+              "proseWrap": "always",
+              "printWidth": 100,
+              "tabWidth": 2,
+              "useTabs": false,
+              "trailingComma": "none",
+              "singleQuote": false
+            }
+            EOF
+          fi
           
       - name: Format Markdown Files
-        run: prettier --write "**/*.md"
+        run: npm run format || npx prettier --write "**/*.md"
         
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4

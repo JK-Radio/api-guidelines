@@ -97,3 +97,23 @@ These workflows can be customized by editing the configuration files:
 - Link checking rules: `.markdown-link-check.json`
 - Spell checking rules: `.spellcheck.yml` and `.wordlist.txt`
 - Formatting rules: `.prettierrc`
+
+## Local Development
+
+The repository includes npm scripts for running the same checks locally:
+
+```bash
+# Install dependencies
+npm install
+
+# Run markdown linting
+npm run lint:md
+
+# Check links
+npm run check:links
+
+# Format markdown files
+npm run format
+```
+
+These scripts are defined in the `package.json` file and can be customized as needed.
