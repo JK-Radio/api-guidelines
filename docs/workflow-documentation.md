@@ -35,6 +35,7 @@ This workflow verifies that all links in the markdown files are valid and workin
 - Ignores internal domain links (configurable)
 - Retries on 429 errors (too many requests)
 - Weekly scheduled run to catch links that become broken over time
+- Uses a custom script to check each markdown file individually
 
 **When it runs:**
 
@@ -109,7 +110,9 @@ These workflows can be customized by editing the configuration files:
 - Spell checking rules: `.spellcheck.yml` and `.wordlist.txt`
 - Formatting rules: `.prettierrc`
 
-## Local Development
+## Local Development & Testing
+
+### Using npm scripts
 
 The repository includes npm scripts for running the same checks locally:
 
@@ -128,3 +131,39 @@ npm run format
 ```
 
 These scripts are defined in the `package.json` file and can be customized as needed.
+
+### Using the Test Script
+
+For a more interactive approach, you can use the PowerShell test script:
+
+```powershell
+# Run the interactive test script
+./scripts/test-workflows.ps1
+```
+
+This script provides a menu-driven interface to test individual workflows or all of them together.
+
+### Using act to test GitHub Actions locally
+
+For a full simulation of GitHub Actions workflows, you can use [act](https://github.com/nektos/act),
+a tool that allows you to run GitHub Actions locally using Docker:
+
+1. Install Docker Desktop for Windows
+2. Install act: `npm install -g @nektos/act` or `choco install act-cli`
+3. Run workflows locally:
+
+```powershell
+# List available workflows
+act -l
+
+# Run a specific workflow
+act -j markdown-lint
+
+# Run a workflow with a specific trigger
+act push -j check-links
+
+# Run a workflow manually (workflow_dispatch)
+act workflow_dispatch -j format
+```
+
+This provides the most accurate simulation of how the workflows will run on GitHub.
